@@ -1,4 +1,4 @@
-# Image Unitily for Google Earth Engine (UtiliGEE)
+# Image Utility for Google Earth Engine (UtiliGEE)
 
 UtiliGEE is a utility library for producing common image and video files from Google Earth Engine (GEE).  
 
