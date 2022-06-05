@@ -80,7 +80,7 @@ def extract_file_name_root(path: str) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(prog='Google Earth Engine Image Library')
+    parser = argparse.ArgumentParser(prog='Image Utility for Google Earth Engine (UtiliGEE)')
     parser.add_argument('-f', required=True,
                          help='File path to source.')
     parser.add_argument('-o', default='out/',
