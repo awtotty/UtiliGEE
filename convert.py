@@ -1,12 +1,12 @@
 import argparse
 from pathlib import Path
-from typing import Union
 
 import numpy as np
 import rasterio
 from PIL import Image
 
 
+# TODO: allow for file paths to Google Drive files and local files
 def arr_from_geotiff(fname: str, 
                      r_channel: int = 1, 
                      g_channel: int = 2,
@@ -40,6 +40,7 @@ def arr_from_geotiff(fname: str,
     return Image.fromarray(img_arr)
 
 
+# TODO: allow output to be Google Drive paths 
 def save_img(img_arr: np.ndarray,
              name: str,
              format: str = 'png', 
@@ -80,9 +81,14 @@ def extract_file_name_root(path: str) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(prog='Image Utility for Google Earth Engine (UtiliGEE)')
+    parser = argparse.ArgumentParser(
+        prog='UtiliGEE GeoTIFF Converter', 
+        description='''A utility for converting GeoTIFF images exported from GEE to common
+            image file types.
+            '''     
+    )
     parser.add_argument('-f', required=True,
-                         help='File path to source.')
+                         help='File path to source GeoTIFF.')
     parser.add_argument('-o', default='out/',
                          help='Output directory.')
     parser.add_argument('--format', default='png',
