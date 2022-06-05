@@ -3,7 +3,8 @@ extraction, export, and conversion to common file types.'''
 
 import argparse
 
-from core import extract_geotiff_from_gee, arr_from_geotiff, save_img
+from core import extract_geotiff_from_gee
+from util import convert_geotiff
 
 
 def main():
@@ -32,7 +33,8 @@ def main():
                          help='Description of the file to be saved (i.e. file name root).')
     parser.add_argument('--mpp', type=int, default=30,
                          help='Meters per pixel. Smaller values yield higher resolution images.')
-    # TODO: add file type arg
+    parser.add_argument('--format', type=str, default='png',
+                         help='Filetype to export to.')
     args = parser.parse_args()
 
 
@@ -44,21 +46,24 @@ def main():
     mpp = args.mpp
     bands = args.bands
     output_dir = args.output_dir
+    format = args.format
+
+    print('Extracting GeoTIFF to Google Drive.')
     extract_geotiff_from_gee(dataset_name, bands, start_date, end_date, output_dir, desc, mpp, 
                          xmin, ymin, xmax, ymax)
 
-    # TODO: 
+    # TODO: 1
     # pull GeoTIFF image from Google Drive
     tmp_dir = 'raw'
     geotiff_local_path = f'{tmp_dir}/{desc}.tif'
 
 
-    # TODO: 
     # convert GeoTIFF to specified format
-    img_arr = arr_from_geotiff(geotiff_local_path)
-    save_img(img_arr, desc)
+    # TODO: 3   uncomment after the above and below TODO 1-2 are complete
+    # convert_geotiff(geotiff_local_path, format, output_dir)
 
-    # TODO: 
+
+    # TODO:  2
     # upload final image to Google Drive? 
 
 

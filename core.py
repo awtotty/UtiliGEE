@@ -4,14 +4,11 @@ functions, etc.
 
 
 import time
-from pathlib import Path
 
 import numpy as np
 import rasterio
 from PIL import Image
 import ee
-
-from util import trim_slash_from_path
 
 
 def extract_geotiff_from_gee(dataset_name: str, 
@@ -41,6 +38,9 @@ def extract_geotiff_from_gee(dataset_name: str,
     # export 
     output_dir = output_dir
     fname_root = desc
+    # TODO: add key attrs to fname (default behavior)
+    # if  attr: details_in_fname: 
+    #   fname += #string with details
     task = ee.batch.Export.image.toDrive(**{
         'image': image, 
         'description': fname_root,
@@ -89,29 +89,4 @@ def arr_from_geotiff(fname: str,
     img_arr[:,:,2] = b
 
     return Image.fromarray(img_arr)
-
-
-# TODO: allow output to be Google Drive paths 
-def save_img(img_arr: np.ndarray,
-             name: str,
-             format: str = 'png', 
-             output_dir: str = "out/", 
-            ) -> None:
-    """Saves an image np.ndarray in the specified format. 
-
-    Args: 
-        img_arr (np.ndarray): 
-        name (str): Name of the image.  
-        format (:obj: `str`, Optional): File type of output. Defaults to 'png'. 
-        output_dir (:obj: `str`, Optional): Output directory. Defaults to 'out/'. 
-            If the directory does not exist, it is created.  
-    """
-
-    output_dir = trim_slash_from_path(output_dir)
-    fname = f"{output_dir}/{name}.{format}"
-
-    # make sure output dir exists (create it if it doesn't)
-    Path(output_dir).mkdir(parents=True, exist_ok=True)
-
-    img_arr.save(fname)
 
