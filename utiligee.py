@@ -3,8 +3,7 @@ extraction, export, and conversion to common file types.'''
 
 import argparse
 
-from core import extract_geotiff_from_gee
-from util import convert_geotiff
+from core import extract_geotiff_from_gee, convert_geotiff
 
 
 def main():
@@ -35,9 +34,9 @@ def main():
                          help='Meters per pixel. Smaller values yield higher resolution images.')
     parser.add_argument('--format', type=str, default='png',
                          help='Filetype to export to.')
-    parser.add_argument('--min', type=int, default=None,
+    parser.add_argument('--min', type=float, default=None,
                          help='Minimum value of image data. Defaults to None. If None, inferred from image.')
-    parser.add_argument('--max', type=int, default=None,
+    parser.add_argument('--max', type=float, default=None,
                          help='Maximum value of image data. Defaults to None. If None, inferred from image.')
     args = parser.parse_args()
 

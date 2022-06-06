@@ -14,7 +14,8 @@ def main():
             '''     
     )
     parser.add_argument('fname',
-                         help='File path to source GeoTIFF.')
+                         help='File path to source GeoTIFF. If fname is a directory, converts all GeoTIFF \
+                             files in that directory.')
     parser.add_argument('-o', default='out/',
                          help='Output directory.')
     parser.add_argument('--format', default='png',
@@ -31,6 +32,7 @@ def main():
     min_value = args.min
     max_value = args.max
 
+    # TODO: if fname is a dir, batch convert
     convert_geotiff(fname, format, output_dir, min_value, max_value)
 
 
