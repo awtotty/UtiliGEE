@@ -19,13 +19,19 @@ def main():
                          help='Output directory.')
     parser.add_argument('--format', default='png',
                          help='Output image format.')
+    parser.add_argument('--min', type=int, default=None,
+                         help='Minimum value of image data. Defaults to None. If None, inferred from image.')
+    parser.add_argument('--max', type=int, default=None,
+                         help='Maximum value of image data. Defaults to None. If None, inferred from image.')
     args = parser.parse_args()
 
     output_dir = trim_slash_from_path(args.o)
     fname = args.fname
     format = args.format
+    min_value = args.min
+    max_value = args.max
 
-    convert_geotiff(fname, format, output_dir)
+    convert_geotiff(fname, format, output_dir, min_value, max_value)
 
 
 if __name__ == '__main__': 

@@ -58,11 +58,20 @@ def save_img(img_arr: np.ndarray,
     img_arr.save(fname)
 
 
-def convert_geotiff(fname: str, format:str = 'png', output_dir: str = '/out'):
+def convert_geotiff(fname: str, 
+                    format:str = 'png', 
+                    output_dir: str = '/out',
+                    min_value: int = None,   
+                    max_value: int = None,
+                   ):
     name = extract_file_name_root(fname)
 
     print(f'Converting GeoTIFF file {fname} to {format} file.')
     img_arr = arr_from_geotiff(fname)
+
+    # TODO: 
+    # project img arr data into rgb range [0, 256)
+    # if min_value and max_value are None, infer their values from img_arr
 
     output_dir = trim_slash_from_path(output_dir) 
     print(f'Saving image to {output_dir}/{name}.{format}')

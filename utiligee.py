@@ -35,6 +35,10 @@ def main():
                          help='Meters per pixel. Smaller values yield higher resolution images.')
     parser.add_argument('--format', type=str, default='png',
                          help='Filetype to export to.')
+    parser.add_argument('--min', type=int, default=None,
+                         help='Minimum value of image data. Defaults to None. If None, inferred from image.')
+    parser.add_argument('--max', type=int, default=None,
+                         help='Maximum value of image data. Defaults to None. If None, inferred from image.')
     args = parser.parse_args()
 
 
@@ -47,6 +51,8 @@ def main():
     bands = args.bands
     output_dir = args.output_dir
     format = args.format
+    min_value = args.min
+    max_value = args.max
 
     print('Extracting GeoTIFF to Google Drive.')
     extract_geotiff_from_gee(dataset_name, bands, start_date, end_date, output_dir, desc, mpp, 
@@ -60,7 +66,7 @@ def main():
 
     # convert GeoTIFF to specified format
     # TODO: 3   uncomment after the above and below TODO 1-2 are complete
-    # convert_geotiff(geotiff_local_path, format, output_dir)
+    # convert_geotiff(geotiff_local_path, format, output_dir, min_value, max_value)
 
 
     # TODO:  2

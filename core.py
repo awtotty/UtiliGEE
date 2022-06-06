@@ -21,7 +21,7 @@ def extract_geotiff_from_gee(dataset_name: str,
                              xmin: float, 
                              ymin: float, 
                              xmax: float, 
-                             ymax: float
+                             ymax: float,
                             ) -> None: 
     # initializes the GEE instance
     ee.Initialize()
