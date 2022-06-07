@@ -12,6 +12,7 @@ from PIL import Image
 import ee
 
 from util import trim_slash_from_path, extract_file_name_root
+from masks_and_filters import maskS2clouds, filter_clouds
 
 
 def extract_geotiff_from_gee(dataset_name: str, 
@@ -25,20 +26,25 @@ def extract_geotiff_from_gee(dataset_name: str,
                              ymin: float, 
                              xmax: float, 
                              ymax: float,
-                             filter: callable = None,
+                             filter: callable = None, 
+                             mask: callable = None,
                             ) -> None: 
     # initializes the GEE instance
     ee.Initialize()
 
     geometry = ee.Geometry.Rectangle([xmin, ymin, xmax, ymax])
 
-    dataset = ee.ImageCollection(dataset_name).filter(ee.Filter.date(start_date, end_date));
-    # additional filtering required based on dataset
-    if filter is None: 
-        # TODO: additional filters are needed based on specific dataset (see GEE web client for more)
-        # default filter is identity
-        filter = lambda x: x 
-    dataset = dataset.map(filter)
+    dataset = ee.ImageCollection(dataset_name).filter(ee.Filter.date(start_date, end_date))
+
+    # additional filtering and masking required based on dataset
+    # if filter is None: 
+    #     filter = filter_from_dataset_name(dataset_name)
+    # if filter is not None: 
+    #     dataset = dataset.filter(filter)
+
+    if mask is None: 
+        mask = mask_from_dataset_name(dataset_name)
+    dataset = dataset.map(mask)
 
     # select bands and average for final image                 
     image = dataset.select(bands).mean();
@@ -63,6 +69,32 @@ def extract_geotiff_from_gee(dataset_name: str,
     while task.active(): 
         time.sleep(1)
     print(f'Export complete. File available in Drive at /{output_dir}/{fname_root}.tif')
+
+
+def filter_from_dataset_name(dataset_name: str):
+    # Sentinel-2 mask
+    if 'S2' in dataset_name: 
+        filter = filter_clouds
+    # TODO: additional filters are needed based on specific dataset (see GEE web client for more)
+
+    # default filter is identity
+    else: 
+        filter = None
+    
+    return filter
+
+
+def mask_from_dataset_name(dataset_name: str):
+    # Sentinel-2 mask
+    if 'S2' in dataset_name: 
+        mask = maskS2clouds
+    # TODO: additional masks are needed based on specific dataset (see GEE web client for more)
+
+    # default filter is identity
+    else: 
+        mask = lambda x: x 
+    
+    return mask 
 
 
 def arr_from_geotiff(fname: str, 
@@ -140,3 +172,12 @@ def convert_geotiff(fname: str,
     output_dir = trim_slash_from_path(output_dir) 
     print(f'Saving image to {output_dir}/{name}.{format}')
     save_img(img_arr=img_arr, name=name, format=format, output_dir=output_dir)
+
+
+def batch_convert_geotiff(dir_name: str, 
+                          format:str = 'png', 
+                          output_dir: str = '/out',
+                          min_value: int = None,   
+                          max_value: int = None,
+                         ):
+    raise NotImplementedError()

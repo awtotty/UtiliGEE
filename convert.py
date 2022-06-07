@@ -3,6 +3,7 @@
 
 import argparse
 
+from core import batch_convert_geotiff
 from util import convert_geotiff, trim_slash_from_path 
 
 
@@ -33,6 +34,9 @@ def main():
     max_value = args.max
 
     # TODO: if fname is a dir, batch convert
+    # if dir: 
+        # batch_convert_geotiff(fname, format, output_dir, min_value, max_value)
+    # else: 
     convert_geotiff(fname, format, output_dir, min_value, max_value)
 
 
